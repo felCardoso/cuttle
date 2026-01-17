@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cuttle Online</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
+</head>
+
+<body>
+
+    <div id="login-screen" class="container">
+        <div class="panel">
+            <img src="/assets/icon.png" alt="Cuttle Icon" class="icon">
+            <input type="text" id="name-input" placeholder="Seu Nickname (ex: amase)" maxlength="10">
+            <input type="text" id="room-input" placeholder="Sala (ex: S123)" maxlength="10">
+            <button id="btn-enter" disabled>Entrar na Mesa</button>
+            <a href="how-to-play.html" class="htp">Como Jogar</a>
+        </div>
+    </div>
+
+
+    <div id="game-screen" class="container hidden table-bg">
+
+        <div class="player-zone opponent">
+            <div class="player-info">
+                <span id="op-name">Oponente</span>
+                <span class="badge" id="op-score">0 pts</span>
+            </div>
+            <div class="hand" id="op-hand">
+            </div>
+            <div class="points" id="op-pts">
+            </div>
+        </div>
+
+        <div class="table-center">
+
+            <div id="deck-pile" class="card-slot deck">
+                <div class="card-slot">
+                    <div class="card-placeholder card-back-pattern"></div>
+                    <!-- <span id="deck-count" class="badge">52</span> -->
+                </div>
+            </div>
+
+            <div class="discard" id="discard-pile">
+                <div class="card-slot">
+                    <div class="card-placeholder">Descarte</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="player-zone me">
+            <div class="hand" id="my-hand">
+            </div>
+            <div class="points" id="my-pts">
+            </div>
+            <div class="player-info">
+                <span id="my-name">Você</span>
+                <!-- <span id="room-display" style="font-size: 0.8em; opacity: 0.7;"></span> -->
+                <span id="status-msg">Iniciando...</span>
+                <span class="badge" id="my-score">0 pts</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="game-over-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 id="modal-title">FIM DE JOGO</h2>
+
+            <div class="modal-result">
+                <p id="modal-message">Você Venceu!</p>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-box">
+                    <span class="stat-label">Suas Vitórias</span>
+                    <span id="my-wins" class="stat-value">0</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Oponente</span>
+                    <span id="op-wins" class="stat-value">0</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="discard-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Pilha de Descarte</h2>
+            <p id="modal-instruction">Clique fora para fechar</p>
+            <div id="discard-grid" class="card-grid">
+            </div>
+            <button id="close-modal-btn">Fechar</button>
+        </div>
+    </div>
+
+    <script type="module" src="js/script.js"></script>
+
+</body>
+
+</html>

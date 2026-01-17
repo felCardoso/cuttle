@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regras do Cuttle</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/rules.css">
+</head>
+
+<body>
+
+    <div class="rules-container">
+
+        <header class="rules-header">
+            <h1>Manual de Campo: Cuttle</h1>
+            <a href="index.html" class="btn-back">Voltar ao Jogo</a>
+        </header>
+
+        <section class="rule-section intro">
+            <h2>Objetivo</h2>
+            <p>Cuttle é um jogo de combate estratégico. Seu objetivo é ser o primeiro a acumular <strong>21
+                    Pontos</strong> de poder na mesa. Mas cuidado: Reis diminuem a quantidade de pontos necessária para
+                vencer!</p>
+        </section>
+
+        <section class="rule-section turn-structure">
+            <h2>No seu turno</h2>
+            <p>Você pode realizar <strong>apenas UMA</strong> destas ações:</p>
+            <ul>
+                <li><strong>Comprar:</strong> Pegue 1 carta do baralho.</li>
+                <li><strong>Pontuar:</strong> Jogue uma carta de número (A-10) na sua mesa para ganhar pontos.</li>
+                <li><strong>Efeito (One-Off):</strong> Jogue uma carta no lixo para ativar sua habilidade especial.</li>
+                <li><strong>Permanente:</strong> Jogue uma figura (J, Q, K) ou um 8 na mesa para um efeito duradouro.
+                </li>
+                <li><strong>Scuttle (Ataque):</strong> Jogue uma carta numérica sobre uma carta de ponto do oponente
+                    para destruí-la (se sua carta for maior).</li>
+            </ul>
+        </section>
+
+        <section class="rule-section card-guide">
+            <h2>Guia das Cartas</h2>
+            <div class="cards-grid">
+
+                <div class="card-row">
+                    <div class="visual">
+                        <div class="card red">
+                            <div class="card-content">
+                                <div class="card-center">A</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <h3>Ás (1 Ponto)</h3>
+                        <p><strong>Ponto:</strong> Vale 1 ponto.</p>
+                        <p><strong>Efeito:</strong> Destrói todas as cartas de Ponto da mesa (Limpa a mesa, exceto
+                            Figuras).</p>
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="visual">
+                        <div class="card black">
+                            <div class="card-content">
+                                <div class="card-center">2</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <h3>Dois (Counter)</h3>
+                        <p><strong>Ponto:</strong> Vale 2 pontos.</p>
+                        <p><strong>Efeito:</strong> Jogue a qualquer momento (mesmo no turno do oponente) para
+                            <strong>CANCELAR</strong> o efeito de uma carta One-Off (habilidade). Um 2 pode cancelar
+                            outro 2.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="visual">
+                        <div class="card red">
+                            <div class="card-content">
+                                <div class="card-center">3</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <h3>Três</h3>
+                        <p><strong>Ponto:</strong> Vale 3 pontos.</p>
+                        <p><strong>Efeito:</strong> Procure no lixo uma carta de sua escolha e coloque na mão.</p>
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="visual">
+                        <div class="card black">
+                            <div class="card-content">
+                                <div class="card-center">4</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <h3>Quatro</h3>
+                        <p><strong>Ponto:</strong> Vale 4 pontos.</p>
+                        <p><strong>Efeito:</strong> O oponente deve descartar 2 cartas da mão (ele escolhe).</p>
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="visual">
+                        <div class="card red">
+                            <div class="card-content">
+                                <div class="card-center">5</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <h3>Cinco</h3>
+                        <p><strong>Ponto:</strong> Vale 5 pontos.</p>
+                        <p><strong>Efeito:</strong> Compre 2 cartas do baralho.</p>
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="visual">
+                        <div class="card black">
+                            <div class="card-content">
+                                <div class="card-center">6</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <h3>Seis</h3>
+                        <p><strong>Ponto:</strong> Vale 6 pontos.</p>
+                        <p><strong>Efeito:</strong> Destrói todas as Figuras (J, Q, K) e Óculos (8) da mesa.</p>
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="visual">
+                        <div class="card red">
+                            <div class="card-content">
+                                <div class="card-center">7</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <h3>Sete</h3>
+                        <p><strong>Ponto:</strong> Vale 7 pontos.</p>
+                        <p><strong>Efeito:</strong> Compre 1 carta e jogue outra imediatamente (sem gastar ação).</p>
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="visual">
+                        <div class="card black">
+                            <div class="card-content">
+                                <div class="card-center">8</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <h3>Oito (Óculos)</h3>
+                        <p><strong>Ponto:</strong> Vale 8 pontos.</p>
+                        <p><strong>Permanente:</strong> Enquanto estiver na sua mesa, o oponente deve jogar com a mão
+                            revelada.</p>
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="visual">
+                        <div class="card red">
+                            <div class="card-content">
+                                <div class="card-center">9</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <h3>Nove</h3>
+                        <p><strong>Ponto:</strong> Vale 9 pontos.</p>
+                        <p><strong>Efeito:</strong> Devolve uma carta Permanente (Ponto ou Figura) da mesa para a mão do
+                            dono. Não pode ser bloqueado por Rainha.</p>
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="visual">
+                        <div class="card black">
+                            <div class="card-content">
+                                <div class="card-center">10</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <h3>Dez</h3>
+                        <p><strong>Ponto:</strong> Vale 10 pontos.</p>
+                        <p><strong>Efeito:</strong> Sem efeito especial.</p>
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="visual">
+                        <div class="card red">
+                            <div class="card-content">
+                                <div class="card-center">J</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <h3>Valete (O Ladrão)</h3>
+                        <p><strong>Permanente:</strong> Coloque sobre uma carta de Ponto do oponente para roubá-la para
+                            a sua mesa.</p>
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="visual">
+                        <div class="card black">
+                            <div class="card-content">
+                                <div class="card-center">Q</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <h3>Rainha (A Guarda)</h3>
+                        <p><strong>Permanente:</strong> Protege suas outras cartas de serem alvo de Valetes ou 9s.
+                            Também protege você de ter cartas roubadas.</p>
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="visual">
+                        <div class="card red">
+                            <div class="card-content">
+                                <div class="card-center">K</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <h3>Rei (O Conquistador)</h3>
+                        <p><strong>Permanente:</strong> Reduz a quantidade de pontos necessários para vencer.</p>
+                        <ul style="font-size: 0.9em; margin-top: 5px;">
+                            <li>0 Reis: Precisa de 21 Pontos</li>
+                            <li>1 Rei: Precisa de 14 Pontos</li>
+                            <li>2 Reis: Precisa de 10 Pontos</li>
+                            <li>3 Reis: Precisa de 7 Pontos</li>
+                            <li>4 Reis: Precisa de 5 Pontos</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,1008 @@
+:root {
+  /* Table */
+  --table-bg: #002935;
+  --table-border: #516d5e;
+
+  /* Card */
+  --card-bg: #eddecc;
+  --card-border: #516d5e;
+  --suit-red: #ad4d44;
+  --suit-black: #002935;
+
+  /* Details */
+  --accent-color: #516d5e;
+  --text-color: #eddecc;
+  --danger-color: #c25e5e;
+
+  /* Theme Palette */
+  --1: #002935; /* Dark Blue */
+  --2: #516d5e; /* Muted Green */
+  --3: #eddecc; /* Light Beige */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--1); /* Fundo fora da mesa */
+  color: var(--text-color);
+  height: 100vh;
+  width: 100vw;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center; /* Centraliza a mesa em telas grandes */
+}
+
+.hidden {
+  display: none !important;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- LOGIN SCREEN --- */
+#login-screen {
+  background-color: var(--1);
+  width: 100vw;
+}
+
+img {
+  max-width: 200px;
+  width: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.panel {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 90%;
+  max-width: 350px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+input,
+button {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 100%;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--2);
+  box-shadow: 0 0 0 4px rgba(81, 109, 94, 0.3);
+  caret-color: var(--1);
+}
+
+input::placeholder {
+  color: var(--2); /* O verde mutado */
+  opacity: 0.6; /* Um pouco transparente para não parecer texto digitado */
+}
+
+button {
+  background-color: var(--1);
+  color: #fff;
+  margin-bottom: 5px;
+  border: none;
+  cursor: pointer;
+  transition: filter 0.2s;
+  transition:
+    background-color 0.4s ease-in-out,
+    opacity 0.4s ease-in-out,
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); /* Um pulinho elástico */
+}
+
+button:disabled {
+  background-color: #555; /* Um cinza escuro para indicar inatividade */
+  color: #999;
+  cursor: not-allowed; /* Mostra o ícone de proibido no mouse */
+  opacity: 0.6; /* Deixa meio transparente */
+  filter: none; /* Remove o brilho de hover */
+  transform: none; /* Remove o efeito de clique */
+}
+
+button:hover {
+  filter: brightness(1.2);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.htp {
+  text-align: center;
+  color: var(--2);
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 10px;
+}
+/* --- GAME TABLE (LAYOUT PRINCIPAL) --- */
+.table-bg {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  width: 100vw;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--table-bg);
+  padding: 10px 0 10px 0;
+  padding-top: env(safe-area-inset-top, 10px);
+  padding-bottom: env(safe-area-inset-bottom, 10px);
+}
+
+/* --- ZONAS DOS JOGADORES (Containers Gerais) --- */
+.player-zone {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* --- ÁREA DE PONTOS (O Campo de Batalha) --- */
+.points {
+  min-height: 130px;
+  width: 100%;
+
+  border: 2px dashed rgba(81, 109, 94, 0.3); /* Verde bem clarinho */
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.1); /* Leve escurecida */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  z-index: 5;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.me .points {
+  /* Faz a mesa crescer para ocupar o espaço entre a mão e o centro da tela */
+  flex-grow: 1;
+  /* Mas respeitando um limite para não empurrar a mão pra fora */
+  max-height: 200px;
+  margin-bottom: 10px; /* Separa um pouco da mão */
+}
+
+.points:hover {
+  background-color: rgba(81, 109, 94, 0.1); /* Brilha verde levemente */
+  border-color: var(--2);
+}
+
+.points .card:hover {
+  transform: scale(0.7); /* Mantém o tamanho */
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+  z-index: auto;
+}
+
+.points .card {
+  transform: scale(0.7); /* Um pouco menores para caber mais */
+  margin: 0 2px; /* Espacinho entre elas */
+  cursor: default; /* Mouse normal */
+  position: relative; /* Remove comportamentos estranhos */
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* --- REGRAS ESPECÍFICAS: OPONENTE --- */
+.opponent {
+  /* Ordem visual: Info -> Mão -> Pontos (perto do centro) */
+  justify-content: flex-start;
+}
+
+.opponent .player-info {
+  order: 1; /* Fica no topo */
+}
+
+.opponent .hand {
+  order: 2;
+  transform: scale(0.8);
+  opacity: 0.8;
+  margin-top: -10px;
+  pointer-events: none;
+}
+
+.opponent .points {
+  order: 3; /* Fica mais perto do centro da tela */
+  align-items: flex-start; /* Alinha cartas no topo desta área */
+}
+
+/* Esconde as cartas do oponente (mostra só o verso) */
+.opponent .hand .card {
+  background: var(--1); /* Azul escuro */
+  border: 2px solid var(--3); /* Borda Bege */
+  color: transparent; /* Esconde naipe/número */
+}
+/* Desenho simples de verso de carta com CSS */
+.opponent .hand .card::after {
+  /* content: "C"; */
+  color: rgba(255, 255, 255, 0.1);
+  font-size: 3rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.opponent .table-card:hover {
+  transform: scale(1.1);
+  border-color: #ff4444; /* Borda vermelha de perigo */
+  z-index: 100;
+}
+
+.shake {
+  animation: shake 0.3s ease-in-out;
+  border-color: red !important;
+}
+/* --- ÁREA CENTRAL (DECK E DESCARTE) --- */
+.table-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-grow: 1;
+  z-index: 5;
+}
+
+.deck {
+  background-color: var(--suit-black);
+  border: 2px solid var(--3);
+  cursor: pointer;
+  position: relative;
+  transition:
+    transform 0.1s,
+    box-shadow 0.2s;
+
+  box-shadow:
+    1px 1px 0 #001a22,
+    2px 2px 0 #001a22,
+    3px 3px 0 #001a22,
+    4px 4px 5px rgba(0, 0, 0, 0.5);
+}
+
+#deck-pile {
+  position: relative; /* Necessário para as cartas absolutas dentro dele */
+  width: 90px; /* Tamanho fixo da carta */
+  height: 126px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  box-shadow: none; /* Remove a sombra antiga gerada por CSS */
+}
+#deck-pile.empty {
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+}
+
+#deck-pile .card {
+  /* Não precisa interagir com os filhos, o clique vai no container pai (#deck-pile) */
+  pointer-events: none;
+  box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.5); /* Sombra em cada carta da pilha */
+}
+
+#deck-pile:not(.empty):hover .card {
+  margin-top: -2px;
+  transition: margin-top 0.2s ease;
+  border: 2px dashed rgba(81, 109, 94, 0.5); /* Usando a cor 2 com transparência */
+} /* Mexe as cartas um pouco pra cima */
+
+#deck-pile .card-slot {
+  border: 2px dashed rgba(81, 109, 94, 0.5); /* Usando a cor 2 com transparência */
+  width: 90px; /* Tamanho fixo da carta */
+}
+
+#deck-pile:not(.empty):active .card {
+  margin-top: 0; /* Clica pra baixo */
+}
+
+.deck:hover {
+  transform: translateY(-2px);
+  border-color: #fff; /* Brilha a borda */
+}
+
+.deck:active {
+  transform: translateY(2px);
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Sombra diminui */
+}
+
+.deck.empty {
+  background-color: transparent;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  cursor: default;
+  box-shadow: none;
+  pointer-events: none; /* Não clicável */
+}
+
+#discard-pile {
+  position: relative; /* Necessário para as cartas absolutas dentro dele */
+  width: 90px; /* Tamanho fixo da carta */
+  height: 126px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  box-shadow: none; /* Remove a sombra antiga gerada por CSS */
+}
+
+#discard-pile .card {
+  /* Não precisa interagir com os filhos, o clique vai no container pai (#discard-pile) */
+  pointer-events: none;
+  box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.5); /* Sombra em cada carta da pilha */
+}
+
+.deck.empty .card-back-pattern {
+  display: none;
+}
+
+.discard .card-slot {
+  position: relative; /* Essencial para o absolute das cartas funcionar */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Garante que as cartas não saiam do quadrado se o offset for grande */
+  overflow: visible;
+}
+
+.discard .card-slot .card {
+  /* O JS já coloca position: absolute, mas reforçamos aqui se quiser */
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.3); /* Sombra suave */
+}
+
+.discard .card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+}
+
+.discard:hover .card {
+  margin-top: -2px;
+  transition: margin-top 0.2s ease;
+  border: 2px dashed var(--2); /* Usando a cor 2 com transparência */
+}
+
+/* --- REGRAS ESPECÍFICAS: VOCÊ (.me) --- */
+.me {
+  justify-content: flex-end;
+}
+
+.me .player-info {
+  order: 3;
+  z-index: 20;
+  width: 100%;
+  border-top: 1px solid var(--2);
+  border-bottom: none;
+  background-color: rgba(0, 41, 53, 0.95);
+  padding: 10px 20px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.me .points {
+  order: 1; /* Fica no topo da sua zona (perto do descarte) */
+  margin-bottom: auto; /* Empurra o resto para baixo se sobrar espaço */
+}
+
+.me .hand {
+  order: 2;
+  z-index: 10; /* Garante que a mão passe por cima dos pontos se ficar apertado */
+}
+
+.me .controls {
+  order: 3; /* Fica na base da tela */
+  z-index: 20; /* Controles sempre clicáveis */
+  background-color: var(--table-bg); /* Fundo sólido para leitura */
+  padding-bottom: 10px;
+}
+
+/* --- ÁREA CENTRAL (DESCARTE) --- */
+/* A div .card-slot que está solta no meio do HTML */
+.table-bg > .card-slot {
+  margin: 10px auto; /* Margem automática centraliza horizontalmente */
+  flex-shrink: 0; /* Não deixa o descarte ser esmagado */
+  z-index: 5;
+}
+
+.discard {
+  position: relative;
+  cursor: pointer;
+}
+.discard.card-slot {
+  border: 2px dashed rgba(81, 109, 94, 0.5);
+}
+
+.discard:hover {
+  transform: translateY(-2px);
+}
+
+/* --- BARRAS DE INFO (HUD) --- */
+.player-info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* Nome na esq, Pontos na dir */
+  align-items: center;
+  padding: 10px 20px;
+  background-color: rgba(0, 41, 53, 0.95); /* Fundo quase sólido para leitura */
+  border-top: 1px solid var(--2);
+  border-bottom: 1px solid var(--2);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* #room-display {
+  margin-left: auto;
+} */
+.opponent .player-info {
+  border-top: none; /* Oponente cola no topo */
+}
+
+.me .player-info {
+  border-bottom: none; /* Jogador cola no fundo */
+}
+
+.badge {
+  background: var(--2);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  min-width: 60px;
+  text-align: center;
+  transition:
+    background-color 0.3s,
+    transform 0.3s;
+}
+
+/* --- CAMPO DE BATALHA (CENTRO) --- */
+/* Essa classe não existe no HTML original, mas o flex vai tratar o que sobrar */
+.table-bg > .card-slot {
+  margin: auto; /* Isso centraliza o discard pile no espaço vazio */
+  transform: scale(1.1); /* Destaque leve */
+}
+
+/* --- CONTROLES DO JOGADOR --- */
+.controls {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+#btn-draw {
+  width: auto;
+  padding: 8px 20px;
+  font-size: 0.9rem;
+  background-color: var(--2);
+  color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* --- MÃO DE CARTAS --- */
+.card-back-pattern {
+  width: 100%;
+  height: 100%;
+  /* background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.05) 0px,
+    rgba(255, 255, 255, 0.05) 10px,
+    transparent 10px,
+    transparent 20px
+  ); */
+  background-image: url("../assets/bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--suit-black);
+  border-radius: 6px;
+}
+
+/* Contador de Cartas */
+#deck-count {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--2);
+  color: #fff;
+  font-size: 1.2rem;
+  padding: 5px 10px 7px;
+  border-radius: 20%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  pointer-events: none; /* O clique passa através do número */
+}
+
+.hand {
+  height: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
+  overflow: visible;
+
+  /* border: 2px solid red; background: rgba(255,0,0,0.1); Visual Debug */
+}
+
+/* Ajuste de sobreposição (Fanning) */
+.hand .card {
+  margin-left: -45px; /* Mais apertado */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.hand .card:first-child {
+  margin-left: 0;
+}
+
+/* Interação Refinada */
+.me .hand .card:hover {
+  transform: translateY(-20px) rotate(-2deg);
+  z-index: 100; /* Garante que o hover fique por cima */
+  margin: 0 5px; /* Abre espaço ao redor */
+  z-index: 1000 !important;
+}
+
+.hand .card.selected {
+  transform: translateY(-40px);
+  border-color: var(--danger-color); /* Borda vermelha se selecionado? */
+  box-shadow: 0 0 15px var(--danger-color);
+  z-index: 100;
+}
+
+/* --- CARD DESIGN (.svg styling) --- */
+.card {
+  width: 90px; /* Levemente menor para caber em telas pequenas */
+  height: 126px; /* Proporção mantida */
+  background-color: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 8px;
+  position: relative;
+  box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.card.red {
+  color: var(--suit-red);
+}
+
+.card.black {
+  color: var(--suit-black);
+}
+
+.card.can-counter {
+  border-color: var(--danger-color);
+  box-shadow: 0 0 15px var(--danger-color);
+  transform: translateY(-20px) !important; /* Pula pra cima e cresce */
+  z-index: 2000 !important; /* Fica na frente de TUDO */
+  cursor: pointer;
+  animation: pulse 1s infinite alternate;
+}
+
+.card.can-counter:hover {
+  transform: translateY(-20px) rotate(-2deg) !important;
+  z-index: 100; /* Garante que o hover fique por cima */
+  margin: 0 5px; /* Abre espaço ao redor */
+}
+
+.card.can-counter.selected {
+  border-color: var(--danger-color);
+  box-shadow: 0 0 15px var(--danger-color);
+  transform: translateY(-40px);
+  z-index: 2000 !important; /* Fica na frente de TUDO */
+  cursor: pointer;
+  animation: pulse 1s infinite alternate;
+}
+
+.card.can-counter.selected:hover {
+  transform: translateY(-40px) rotate(-2deg) !important;
+}
+
+.card-corner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1rem;
+  line-height: 0.9;
+}
+
+.top-left {
+  top: 5px;
+  left: 5px;
+}
+
+.bottom-right {
+  bottom: 5px;
+  right: 5px;
+  transform: rotate(180deg);
+}
+
+.card-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5rem;
+}
+
+/* --- PLACEHOLDERS --- */
+.card-slot {
+  margin: 10px auto;
+  width: 90px;
+  height: 126px;
+  border: 2px dashed rgba(81, 109, 94, 0.5); /* Usando a cor 2 com transparência */
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#status-msg {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  white-space: nowrap;
+  text-align: center;
+  font-weight: bold;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+.card.flying {
+  z-index: 2000 !important; /* Fica acima de tudo */
+  pointer-events: none; /* Não clica enquanto voa */
+}
+
+body:has(.card.can-counter.selected) .discard .card-slot:hover {
+  cursor: pointer;
+
+  /* Sugestão visual: Faz a pilha de descarte brilhar para indicar que é o alvo */
+  border: var(--card-bg) 2px dashed;
+  transition: all 0.3s ease;
+}
+
+body:has(.card.can-counter.selected) .discard .card-slot {
+  cursor: pointer;
+
+  /* Sugestão visual: Faz a pilha de descarte brilhar para indicar que é o alvo */
+  border: var(--card-bg) 2px dashed;
+  transition: all 0.3s ease;
+}
+
+/* MODAL (Fundo escurecido) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 41, 53, 0.9); /* Azul escuro transparente */
+  backdrop-filter: blur(5px); /* Desfoque moderno */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999 !important;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+/* O Cartão do Modal */
+.modal-content {
+  background-color: var(--table-bg);
+  border: 2px solid var(--3); /* Bege */
+  padding: 2rem;
+  border-radius: 15px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  transform: scale(0.8);
+  animation: popIn 0.3s 0.2s forwards; /* Animação de pulo */
+}
+
+.modal-result #modal-message {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 20px 0;
+  text-transform: uppercase;
+}
+
+/* Cores de Vitória/Derrota */
+.win-text {
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+.lose-text {
+  color: var(--danger-color);
+}
+
+/* Placar */
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--2);
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--3);
+}
+
+/* Classe para destacar cartas que podem ser alvo */
+.target-possible {
+  cursor: crosshair !important; /* Muda o mouse para uma mira */
+  box-shadow: 0 0 15px #ff9900 !important; /* Brilho Laranja */
+  animation: pulse-target 0.8s infinite alternate;
+  z-index: 100;
+  border-color: #ff9900 !important;
+}
+
+/* Quando o mouse passa por cima do alvo */
+.target-possible:hover {
+  background-color: rgba(255, 153, 0, 0.2);
+  transform: scale(1.1) !important;
+}
+
+/* Alerta de Descarte Obrigatório */
+.must-discard {
+  box-shadow: 0 0 15px var(--danger-color) !important; /* Vermelho */
+  border-color: var(--danger-color) !important;
+  animation: pulse-danger 0.8s infinite alternate;
+  cursor: pointer;
+}
+
+.must-discard:hover {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+/* Modal de Fundo Escuro */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #2a2a2a;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  text-align: center;
+  border: 2px solid #444;
+}
+
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 10px;
+}
+
+/* Ajuste visual das cartas dentro do modal */
+.card-grid .card {
+  position: relative;
+  transform: scale(0.9);
+  cursor: pointer;
+}
+
+.card-grid .card:hover {
+  transform: scale(1);
+  border-color: yellow;
+}
+
+/* Container para cartas agrupadas (Ponto + Valete) */
+.card-group {
+  position: relative;
+  width: 70px; /* Largura da carta */
+  height: 100px;
+  margin-right: 20px; /* Espaço extra para o Valete aparecer */
+}
+
+/* O Valete fica deslocado para baixo e rotacionado */
+.card-group .jack-overlay {
+  position: absolute;
+  top: -17px;
+  left: 0px;
+  z-index: 0 !important;
+  transform: scale(0.7) !important;
+  border: 2px solid #d00;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  filter: brightness(0.85);
+
+  /* --- NOVO: Animação suave --- */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.pass-through {
+  pointer-events: none !important;
+}
+
+.card-group .jack-overlay:hover {
+  /* Fica reto, cresce um pouquinho e sobe para facilitar a leitura */
+  transform: scale(0.8) translateY(-10px);
+
+  /* Traz para frente da carta de ponto */
+  z-index: 0 !important;
+
+  /* Remove o escurecimento e destaca a borda */
+  filter: brightness(1);
+  border-color: #ffcc00; /* Amarelo ouro */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+}
+
+/* A carta de ponto fica por cima */
+.card-group .point-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.revealed-hand {
+  transform: scale(0.9) !important; /* Um pouco menor */
+  /* box-shadow: 0 0 10px #0ff; */
+  border-color: var(--card-border);
+}
+
+.opponent .hand .card.revealed-hand {
+  background-color: var(--card-bg);
+  border: 2px solid var(--card-border);
+  color: var(--suit-black); /* Define a cor padrão como preto (Paus/Espadas) */
+  pointer-events: none; /* Mantém a regra de não poder clicar */
+}
+
+.opponent .hand .card.revealed-hand.red {
+  color: var(--suit-red);
+}
+
+.restart-btn {
+  margin-top: 20px;
+  background-color: var(--2); /* Verde */
+  color: white;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  border: 2px solid #fff;
+  border-radius: 50px;
+  cursor: pointer;
+  width: 100%;
+  text-transform: uppercase;
+  font-weight: bold;
+  transition:
+    transform 0.2s,
+    background-color 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.restart-btn:hover {
+  background-color: #638573; /* Um verde um pouco mais claro */
+  transform: scale(1.05);
+}
+
+.restart-btn:active {
+  transform: scale(0.95);
+}
+
+/* Animações */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popIn {
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  from {
+    box-shadow: 0 0 10px var(--danger-color);
+  }
+  to {
+    box-shadow: 0 0 30px var(--danger-color);
+  }
+}
+
+@keyframes pulse-target {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes pulse-danger {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05) rotate(2deg);
+  }
+}

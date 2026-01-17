@@ -1,0 +1,137 @@
+/* rules.css */
+
+/* Reutiliza o fundo escuro, mas permite rolagem */
+body {
+  background-color: var(--table-bg); /* Do style.css */
+  color: var(--text-color);
+  overflow-y: auto; /* Permite rolar a página */
+  height: auto;
+  display: block; /* Remove o flex center do body original */
+  overflow-x: hidden;
+}
+
+.rules-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* Header */
+.rules-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--2);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.rules-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: var(--3);
+}
+
+.btn-back {
+  text-decoration: none;
+  background-color: var(--2);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: filter 0.2s;
+}
+
+.btn-back:hover {
+  filter: brightness(1.2);
+}
+
+/* Seções de Texto */
+.rule-section {
+  margin-bottom: 40px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.rule-section h2 {
+  color: var(--3);
+  border-left: 4px solid var(--danger-color);
+  padding-left: 10px;
+  margin-top: 0;
+}
+
+.rule-section p,
+.rule-section li {
+  line-height: 1.6;
+  color: #ddd;
+}
+
+.rule-section ul {
+  list-style-type: none; /* Remove bolinhas padrão */
+  padding-left: 10px;
+}
+
+.rule-section li {
+  margin-bottom: 10px;
+  padding-left: 15px;
+  border-left: 2px solid var(--2);
+}
+
+/* --- GRID DE CARTAS (A parte visual) --- */
+
+.card-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 20px;
+}
+
+.card-row:last-child {
+  border-bottom: none;
+}
+
+.visual {
+  flex-shrink: 0;
+}
+
+/* Ajuste para a carta visual ficar bonita na lista, mas menor */
+.visual .card {
+  position: relative; /* Reseta posições absolutas do jogo */
+  transform: scale(0.8); /* Um pouco menor */
+  margin: 0;
+  cursor: default;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Garante que o conteúdo da carta apareça (já que copiamos do style.css) */
+.visual .card-center {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.desc h3 {
+  margin: 0 0 5px 0;
+  color: var(--3);
+}
+
+.desc p {
+  margin: 5px 0;
+  font-size: 0.95rem;
+}
+
+/* Responsividade para celular */
+@media (max-width: 600px) {
+  .card-row {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .rule-section li {
+    border-left: none;
+    border-bottom: 1px solid var(--2);
+    padding-bottom: 10px;
+  }
+}
